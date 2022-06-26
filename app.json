@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "tensorMusic",
+    "slug": "tensorMusic",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "tensorMusic"
+}
