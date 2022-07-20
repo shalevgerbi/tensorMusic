@@ -128,16 +128,29 @@ export default function App(props) {
       console.log(error)
     }
   }
+  const recordAudio = () =>{
+    console.log("hi")
+  }
   return (
     <View>
       <Text>App</Text>
       <Text>TF Status: {isTfReady ? "👌" : "⏳"}</Text>
       <Text>Mobilenet Model Status: {mobilenetModel ? "👌" : "⏳"}</Text>
+      <Text>Hello World</Text>
       <Image
         source={{ uri: image.uri }}
         style={{ width: 200, height: 200, margin: 20 }}
       />
       {/* <HTMLImageElement id="img1" style={{height:224, width: 224}} source={require('./dog.jpg')}/> */}
+      <Button
+        title="Record"
+        onPress={() => recordAudio()}
+        disabled={mobilenetModel ? false : true}
+      >
+        
+        Record
+      </Button>
+      
       <Button
         title="Predict"
         onPress={() => mobilenetModel ? selectImage() : undefined}
