@@ -7,6 +7,7 @@ import * as mobilenet from "@tensorflow-models/mobilenet";
 import { fetch, decodeJpeg } from "@tensorflow/tfjs-react-native";
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from "expo-file-system";
+import { Pressable, TouchableOpacity } from "react-native";
 export default function App(props) {
   // Load mobilenet.
 
@@ -142,23 +143,26 @@ export default function App(props) {
         style={{ width: 200, height: 200, margin: 20 }}
       />
       {/* <HTMLImageElement id="img1" style={{height:224, width: 224}} source={require('./dog.jpg')}/> */}
-      <Button
+      <TouchableOpacity
+        className="redButton"
+        color
         title="Record"
+        style={styles.redButton}
         onPress={() => recordAudio()}
         disabled={mobilenetModel ? false : true}
       >
         
-        Record
-      </Button>
+        <Text>Record</Text>
+      </TouchableOpacity>
       
-      <Button
+      <TouchableOpacity
         title="Predict"
         onPress={() => mobilenetModel ? selectImage() : undefined}
         disabled={mobilenetModel ? false : true}
       >
         
-        Click
-      </Button>
+        <Text> Click</Text>
+      </TouchableOpacity>
       {predictions ? (
         <View style={styles.predictions}>
           <Text
@@ -172,7 +176,7 @@ export default function App(props) {
             it might also be a {predictions[1].className.toLowerCase()} or{" "}
             {predictions[2].className.toLowerCase()}
           </Text>
-          <Button title="Clear" onPress={clearPredictions} />
+          <TouchableOpacity title="Clear" onPress={clearPredictions} />
         </View>
       ) : null}
     </View>
@@ -185,5 +189,20 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+    
+  },
+  
+  redButton: {
+    
+    color: "red",
+    backgroundColor: "red",
+    width: "50%",
+    height: "50%",
+    
+
+
+    
+    
+
   },
 });
