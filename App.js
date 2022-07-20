@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
   redButton: {
     
     color: "red",
-    backgroundColor: "red",
+    backgroundColor: "blue",
     width: "50%",
     height: "50%",
     
