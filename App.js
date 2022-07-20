@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
   bigBlue: {
     color: 'blue',
     fontWeight: 'bold',
-    fontSize: 30,
+    fontSize: 29,
   },
   button: {
     backgroundColor: "#0000FF",
