@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
-import { Button, Image, StyleSheet, Text, View } from "react-native";
+import { Button, Image, StyleSheet, Text, View,TouchableOpacity } from "react-native";
 import * as tf from "@tensorflow/tfjs";
 import "@tensorflow/tfjs-react-native";
 import * as mobilenet from "@tensorflow-models/mobilenet";
@@ -135,9 +135,14 @@ export default function App(props) {
   return (
     <View>
       <Text>App</Text>
-      <Text>TF Status: {isTfReady ? "👌" : "⏳"}</Text>
+      <Text style={styles.bigBlue}>TF Status: {isTfReady ? "👌" : "⏳"}</Text>
       <Text>Mobilenet Model Status: {mobilenetModel ? "👌" : "⏳"}</Text>
       <Text>Hello World</Text>
+
+      <TouchableOpacity style={styles.button} >
+      <Text> Hello </Text>
+    </TouchableOpacity>
+
       <Image
         source={{ uri: image.uri }}
         style={{ width: 200, height: 200, margin: 20 }}
@@ -151,11 +156,12 @@ export default function App(props) {
         onPress={() => recordAudio()}
         disabled={mobilenetModel ? false : true}
       >
-        
+
         <Text>Record</Text>
       </TouchableOpacity>
       
       <TouchableOpacity
+
         title="Predict"
         onPress={() => mobilenetModel ? selectImage() : undefined}
         disabled={mobilenetModel ? false : true}
@@ -186,7 +192,7 @@ export default function App(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#0000FF",
     alignItems: "center",
     justifyContent: "center",
     
@@ -205,4 +211,18 @@ const styles = StyleSheet.create({
     
 
   },
+  bigBlue: {
+    color: 'blue',
+    fontWeight: 'bold',
+    fontSize: 24,
+  },
+  button: {
+    backgroundColor: "#0000FF",
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 4,
+    elevation: 3,
+  }
 });
