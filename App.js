@@ -129,11 +129,11 @@ export default function App(props) {
       console.log(error)
     }
   }
-  const recordAudio = () =>{
+  const recordAudio = () => {
     console.log("hi")
   }
   return (
-    <View>
+    <View className="container">
       <Text>App</Text>
       <Text style={styles.bigBlue}>TF Status: {isTfReady ? "👌" : "⏳"}</Text>
       <Text>Mobilenet Model Status: {mobilenetModel ? "👌" : "⏳"}</Text>
@@ -148,25 +148,24 @@ export default function App(props) {
         style={{ width: 200, height: 200, margin: 20 }}
       />
       {/* <HTMLImageElement id="img1" style={{height:224, width: 224}} source={require('./dog.jpg')}/> */}
+      <Text style={styles.center}>Record</Text>
       <TouchableOpacity
         className="redButton"
-        color
-        title="Record"
         style={styles.redButton}
         onPress={() => recordAudio()}
         disabled={mobilenetModel ? false : true}
       >
 
-        <Text>Record</Text>
+
       </TouchableOpacity>
-      
+
       <TouchableOpacity
 
         title="Predict"
         onPress={() => mobilenetModel ? selectImage() : undefined}
         disabled={mobilenetModel ? false : true}
       >
-        
+
         <Text> Click</Text>
       </TouchableOpacity>
       {predictions ? (
@@ -190,39 +189,35 @@ export default function App(props) {
 }
 
 const styles = StyleSheet.create({
+
   container: {
-    flex: 1,
-    backgroundColor: "#0000FF",
+
+
+    backgroundColor: "green",
+    backgroundColor: "#fff",
+
     alignItems: "center",
     justifyContent: "center",
-    
+
   },
-  
+  center: {
+    justifyContent: "center",
+    margin: "auto"
+  },
   redButton: {
-    
-    color: "green",
+    width: "50px",
+    height: "50px",
+    margin: "auto",
+    borderRadius: "35px",
     backgroundColor: "red",
-    width: "50%",
-    height: "50%",
+    border: 0,
     
+    outline: "none",
+    borderRadius: "35px",
+    Rec: {
+      
+    }
 
-
-    
-    
-
-  },
-  bigBlue: {
-    color: 'blue',
-    fontWeight: 'bold',
-    fontSize: 24,
-  },
-  button: {
-    backgroundColor: "#0000FF",
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    borderRadius: 4,
-    elevation: 3,
   }
-});
+},
+);
