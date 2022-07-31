@@ -25,3 +25,15 @@ Install @tensorflow/tfjs-react-native
 ```
 yarn add @tensorflow/tfjs-react-native
 ```
+install @react-navigation/native 
+```
+yarn add @react-navigation/native 
+```
+install @react-navigation/native-stack
+```
+yarn add @react-navigation/native-stack
+```
+install react-native-safe-area-context
+```
+yarn add react-native-safe-area-context
+```
