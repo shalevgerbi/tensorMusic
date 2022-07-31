@@ -1,14 +1,29 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useEffect, useState } from "react";
-import { Button, Image, StyleSheet, Text, View,TouchableOpacity } from "react-native";
+import * as React from "react"
+import { useEffect, useState } from "react";
+import { Button, Image, StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import * as tf from "@tensorflow/tfjs";
 import "@tensorflow/tfjs-react-native";
 import * as mobilenet from "@tensorflow-models/mobilenet";
 import { fetch, decodeJpeg } from "@tensorflow/tfjs-react-native";
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from "expo-file-system";
-import { Pressable, TouchableOpacity } from "react-native";
-export default function App(props) {
+import TakePicture from "./Pages/TakePicture";
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Home from "./Pages/Home";
+import NotesDetection from "./Pages/NotesDetection";
+function HomeScreen() {
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text>Home Screen</Text>
+    </View>
+  );
+}
+
+const Stack = createNativeStackNavigator();
+
+export default function App() {
   // Load mobilenet.
 
   const [isTfReady, setIsTfReady] = useState(false);
@@ -28,7 +43,7 @@ export default function App(props) {
         console.log(err);
       }
     })();
-
+    
     // const img = new Image()
     // img.src = "./dog.jpg"
     // const img = document.querySelector('img');
@@ -133,58 +148,74 @@ export default function App(props) {
     console.log("hi")
   }
   return (
-    <View className="container">
-      <Text>App</Text>
-      <Text style={styles.bigBlue}>TF Status: {isTfReady ? "👌" : "⏳"}</Text>
-      <Text>Mobilenet Model Status: {mobilenetModel ? "👌" : "⏳"}</Text>
-      <Text>Hello World</Text>
-
-      <TouchableOpacity style={styles.button} >
-      <Text> Hello </Text>
-    </TouchableOpacity>
-
-      <Image
-        source={{ uri: image.uri }}
-        style={{ width: 200, height: 200, margin: 20 }}
-      />
-      {/* <HTMLImageElement id="img1" style={{height:224, width: 224}} source={require('./dog.jpg')}/> */}
-      <Text style={styles.center}>Record</Text>
-      <TouchableOpacity
-        className="redButton"
-        style={styles.redButton}
-        onPress={() => recordAudio()}
-        disabled={mobilenetModel ? false : true}
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="NotesDetection" component={NotesDetection} />
+        <Stack.Screen name="TakePicture" component={TakePicture} />
+      
+      </Stack.Navigator>
+      {/* <TouchableOpacity
+       title="Go to Image capture" onPress={() => navigation.navigate('notes-to-sound', { name: 'Jane' })
+      }
       >
+       <Text
+       style={styles.center}
+       >Go to Image capture</Text> 
+        </TouchableOpacity>
+      <View className="container">
+        <Text>App</Text>
+        <Text style={styles.bigBlue}>TF Status: {isTfReady ? "👌" : "⏳"}</Text>
+        <Text>Mobilenet Model Status: {mobilenetModel ? "👌" : "⏳"}</Text>
+        <Text>Hello World</Text>
+
+        <TouchableOpacity style={styles.button} >
+          <Text> Hello </Text>
+        </TouchableOpacity>
+
+        <Image
+          source={{ uri: image.uri }}
+          style={{ width: 200, height: 200, margin: 20 }}
+        /> */}
+        {/* <HTMLImageElement id="img1" style={{height:224, width: 224}} source={require('./dog.jpg')}/> */}
+        {/* <Text style={styles.center}>Record</Text>
+        <TouchableOpacity
+          className="redButton"
+          style={styles.redButton}
+          onPress={() => recordAudio()}
+          disabled={mobilenetModel ? false : true}
+        >
 
 
-      </TouchableOpacity>
+        </TouchableOpacity>
 
-      <TouchableOpacity
+        <TouchableOpacity
 
-        title="Predict"
-        onPress={() => mobilenetModel ? selectImage() : undefined}
-        disabled={mobilenetModel ? false : true}
-      >
+          title="Predict"
+          onPress={() => mobilenetModel ? selectImage() : undefined}
+          disabled={mobilenetModel ? false : true}
+        >
 
-        <Text> Click</Text>
-      </TouchableOpacity>
-      {predictions ? (
-        <View style={styles.predictions}>
-          <Text
-            style={{
-              marginBottom: 20
-            }}
-          >
-            I'm {predictions[0].probability.toFixed(2)}% sure it's a{" "}
-            {predictions[0].className.toLowerCase()}
-            {", "}
-            it might also be a {predictions[1].className.toLowerCase()} or{" "}
-            {predictions[2].className.toLowerCase()}
-          </Text>
-          <TouchableOpacity title="Clear" onPress={clearPredictions} />
-        </View>
-      ) : null}
-    </View>
+          <Text> Click</Text>
+        </TouchableOpacity>
+        {predictions ? (
+          <View style={styles.predictions}>
+            <Text
+              style={{
+                marginBottom: 20
+              }}
+            >
+              I'm {predictions[0].probability.toFixed(2)}% sure it's a{" "}
+              {predictions[0].className.toLowerCase()}
+              {", "}
+              it might also be a {predictions[1].className.toLowerCase()} or{" "}
+              {predictions[2].className.toLowerCase()}
+            </Text>
+            <TouchableOpacity title="Clear" onPress={clearPredictions} />
+          </View>
+        ) : null}
+      </View> */}
+    </NavigationContainer>
   );
 }
 
@@ -211,12 +242,10 @@ const styles = StyleSheet.create({
     borderRadius: "35px",
     backgroundColor: "red",
     border: 0,
+
     
-    outline: "none",
     borderRadius: "35px",
-    Rec: {
-      
-    }
+    
 
   }
 },
