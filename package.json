@@ -17,7 +17,7 @@
     "@tensorflow/tfjs-react-native": "^0.8.0",
     "async-storage": "^0.1.0",
     "expo": "~45.0.0",
-    "expo-av": "~11.2.3",
+    "expo-av": "^12.0.2",
     "expo-camera": "^12.2.0",
     "expo-file-system": "~14.0.0",
     "expo-gl": "^11.3.0",
@@ -30,6 +30,7 @@
     "react-native": "0.68.2",
     "react-native-fs": "^2.20.0",
     "react-native-safe-area-context": "^4.3.1",
+    "react-native-screens": "^3.15.0",
     "react-native-web": "0.17.7"
   },
   "devDependencies": {
