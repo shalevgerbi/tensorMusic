@@ -6,10 +6,13 @@ export default function Home({ navigation }) {
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>Choose from Menu:</Text>
       <TouchableOpacity onPress={() =>
-        navigation.navigate('NotesDetection')
+        navigation.navigate('Notes Detection')
       }><Text>Sound to Notes</Text></TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate('TakePicture')}>
+      <TouchableOpacity onPress={() => navigation.navigate('Take Picture')}>
         <Text>Picture to Sound</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('Demo')}>
+        <Text>Demo Page</Text>
       </TouchableOpacity>
 
     </View>
