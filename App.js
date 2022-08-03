@@ -236,12 +236,14 @@ const styles = StyleSheet.create({
     margin: "auto"
   },
   redButton: {
+
     width: "50px",
     height: "50px",
     margin: "auto",
     borderRadius: "35px",
     backgroundColor: "red",
     border: 0,
+
 
     
     borderRadius: "35px",
