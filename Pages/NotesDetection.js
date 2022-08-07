@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import { Text, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { Audio } from 'expo-av';
-// import file from "http://localhost:19006/be737462-9827-4960-a3e7-bd4d8aa0e4d3";
 import * as FileSystem from 'expo-file-system';
+
 export default function NotesDetection(){
   const [recording, setRecording] = useState();
   const [sound, setSound] = useState();
@@ -67,3 +67,4 @@ export default function NotesDetection(){
     </View>
   )
 }
+
