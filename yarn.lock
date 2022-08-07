@@ -5192,6 +5192,11 @@ expo-pwa@0.0.120:
     commander "2.20.0"
     update-check "1.5.3"
 
+expo-sharing@^10.3.0:
+  version "10.3.0"
+  resolved "https://registry.yarnpkg.com/expo-sharing/-/expo-sharing-10.3.0.tgz#4e8e2a50d1c22ea510699664bb6ce827cb06738e"
+  integrity sha512-j3kn43WCOykj7mlGTb5Q3Z56DG8raFdTk0A+rauA7lsmJ5Vakb2qGyTFZ7uwqwrML10EQIPAzNEcEYgpIzHKIw==
+
 expo-splash-screen@~0.15.1:
   version "0.15.1"
   resolved "https://registry.yarnpkg.com/expo-splash-screen/-/expo-splash-screen-0.15.1.tgz#bdfb2434bda7fb1cde97e029fc7a791d7b3e3125"
