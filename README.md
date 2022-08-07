@@ -37,3 +37,7 @@ install react-native-safe-area-context
 ```
 yarn add react-native-safe-area-context
 ```
+install react-native-screens
+```
+yarn add react-native-screens
+```
