@@ -28,6 +28,7 @@ export default function App() {
   const [predictions, setPredictions] = useState(null);
   useEffect(() => {
     (async function getTensor() {
+      await tf.setBackend('cpu')
       await tf.ready();
       setIsTfReady(true);
       try {
@@ -37,7 +38,7 @@ export default function App() {
         console.log(err);
       }
     })();
-
+console.log("hello");
     // const img = new Image()
     // img.src = "./dog.jpg"
     // const img = document.querySelector('img');
