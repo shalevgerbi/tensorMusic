@@ -17,9 +17,11 @@ export default function Demo({navigation}) {
     const [predictions, setPredictions] = useState(null);
     useEffect(() => {
       (async function getTensor() {
+        await tf.setBackend('cpu')
         await tf.ready();
         setIsTfReady(true);
         try {
+            
           let myModel = await mobilenet.load();
           setMobilenetModel(myModel);
         } catch (err) {

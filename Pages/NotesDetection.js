@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { Audio } from 'expo-av';
 import * as FileSystem from 'expo-file-system';
-import { Button } from 'react-native-web';
 import * as Sharing from 'expo-sharing';
+import Board from '../components/Board';
 
 export default function NotesDetection() {
   const [recording, setRecording] = useState();
@@ -82,6 +82,7 @@ export default function NotesDetection() {
     // updatedRecordings = true;
     setRecordings(updatedRecordings);
   }
+  
   function getDurationFormatted(millis) {
     const minutes = millis / 1000 / 60;
     const minutesDisplay = Math.floor(minutes);
@@ -89,6 +90,7 @@ export default function NotesDetection() {
     const secondsDisplay = seconds < 10 ? `0${seconds}` : seconds;
     return `${minutesDisplay}:${secondsDisplay}`;
   }
+
   function getRecordingLines() {
     return recordings.map((recordingLine, index) => {
       return (
@@ -100,6 +102,7 @@ export default function NotesDetection() {
       );
     });
   }
+  
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>Notes Detection from Sound</Text>
@@ -111,6 +114,7 @@ export default function NotesDetection() {
       </TouchableOpacity>
       {recording ? <Text>Recording...</Text> : null}
       {getRecordingLines()}
+      <Board/>
     </View>
   )
 }
@@ -140,7 +144,7 @@ const styles = StyleSheet.create({
     border: 0,
     borderRadius: 35,
     margin: 18,
-    outline: "none",
+    
 
   }
 },
