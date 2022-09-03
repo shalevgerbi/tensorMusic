@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { Audio } from 'expo-av';
 import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import Board from '../components/Board';
+import BPMSlider from '../components/BPMSlider';
 
 export default function NotesDetection() {
   const [recording, setRecording] = useState();
@@ -40,8 +41,8 @@ export default function NotesDetection() {
     try {
       console.log('Requesting permissions..');
       const permissions = await Audio.requestPermissionsAsync();
-      
-      if (permissions.status === "granted"){
+
+      if (permissions.status === "granted") {
         await Audio.setAudioModeAsync({
           allowsRecordingIOS: true,
           playsInSilentModeIOS: true,
@@ -82,7 +83,7 @@ export default function NotesDetection() {
     // updatedRecordings = true;
     setRecordings(updatedRecordings);
   }
-  
+
   function getDurationFormatted(millis) {
     const minutes = millis / 1000 / 60;
     const minutesDisplay = Math.floor(minutes);
@@ -96,26 +97,37 @@ export default function NotesDetection() {
       return (
         <View key={index} style={styles.row}>
           <Text style={styles.fill}>Recording {index + 1} - {recordingLine.duration}</Text>
-          <TouchableOpacity style={styles.button} onPress={() => recordingLine.sound.replayAsync()} title="Play"><Text>Play</Text></TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={() => Sharing.shareAsync(recordingLine.file)} title="Share"><Text>Share</Text></TouchableOpacity>
+          <View style={{ display: 'flex', flexDirection: 'row' }}>
+            <TouchableOpacity style={styles.button} onPress={() => recordingLine.sound.replayAsync()} title="Play"><Text style={styles.button}>Play</Text></TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={() => Sharing.shareAsync(recordingLine.file)} title="Share"><Text style={styles.button}>Share</Text></TouchableOpacity>
+          </View>
         </View>
       );
     });
   }
-  
+
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <ScrollView
+      contentContainerStyle={{
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}
+      style={{
+        flex: 1,
+      }}
+    >
       <Text>Notes Detection from Sound</Text>
+      <BPMSlider/>
       <TouchableOpacity style={styles.redButton} onPress={recording ? stopRecording : startRecording}>
-        <Text style={{ fontSize: 30 }}>Click</Text>
+        {/* <Text style={{ fontSize: 30 }}>Click</Text> */}
       </TouchableOpacity>
       <TouchableOpacity style={styles.headers} onPress={url ? playSound : stopSound}>
         <Text style={{ fontSize: 30 }}>play sound</Text>
       </TouchableOpacity>
       {recording ? <Text>Recording...</Text> : null}
       {getRecordingLines()}
-      <Board/>
-    </View>
+      <Board recCount={recordings.length}/>
+    </ScrollView>
   )
 }
 const styles = StyleSheet.create({
@@ -144,8 +156,21 @@ const styles = StyleSheet.create({
     border: 0,
     borderRadius: 35,
     margin: 18,
-    
 
+
+  },
+  button: {
+    fontSize: 30,
+    marginHorizontal: 10
+
+  },
+  fill: {
+    fontSize: 20,
+    top: 8
+  },
+  row: {
+    display: 'flex',
+    flexDirection: 'row'
   }
 },
 );
