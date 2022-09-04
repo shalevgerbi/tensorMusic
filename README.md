@@ -41,3 +41,6 @@ install react-native-screens
 ```
 yarn add react-native-screens
 ```
+```
+expo install react-native-svg
+```

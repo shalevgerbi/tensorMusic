@@ -17,9 +17,11 @@ export default function Demo({navigation}) {
     const [predictions, setPredictions] = useState(null);
     useEffect(() => {
       (async function getTensor() {
+        await tf.setBackend('cpu')
         await tf.ready();
         setIsTfReady(true);
         try {
+            
           let myModel = await mobilenet.load();
           setMobilenetModel(myModel);
         } catch (err) {
@@ -213,15 +215,15 @@ const styles = StyleSheet.create({
       margin: "auto"
     },
     redButton: {
-      width: "50px",
-      height: "50px",
+      width: 50,
+      height: 50,
       margin: "auto",
-      borderRadius: "35px",
+      borderRadius: 35,
       backgroundColor: "red",
       border: 0,
   
       
-      borderRadius: "35px",
+      borderRadius: 35,
       
   
     }
