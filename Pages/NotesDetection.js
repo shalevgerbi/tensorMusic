@@ -1,16 +1,98 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { Audio } from 'expo-av';
 import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import Board from '../components/Board';
 import BPMSlider from '../components/BPMSlider';
+import * as tf from "@tensorflow/tfjs";
+import "@tensorflow/tfjs-react-native";
+import * as NotesDetectionModel from "../models/model.json";
+import {decodeJpeg, asyncStorageIO } from "@tensorflow/tfjs-react-native";
 
 export default function NotesDetection() {
   const [recording, setRecording] = useState();
   const [recordings, setRecordings] = useState([]);
   const [sound, setSound] = useState();
   const [url, setUri] = useState('');
+  const [isTfReady, setIsTfReady] = useState(false);
+  const [model, setModel] = useState(null);
+  const [image, setImage] = useState({
+    uri: "./dog.jpg",
+  });
+  const [predictions, setPredictions] = useState(null);
+  
+  useEffect(() => {
+    (async function getTensor() {
+      const myModel = await tf.loadLayersModel(asyncStorageIO('../models/model.json').load)
+      // const myModel = await tf.loadLayersModel('../models/model.json');
+      // console.log(NotesDetectionModel.modelTopology.model_config.class_name)
+      // let data = await fetch('../models/model.json')
+      // data = data.json();
+      // console.log(data);
+      await tf.loadLayersModel(NotesDetectionModel).then(data => console.log("data"))
+      await tf.setBackend('cpu')
+      await tf.ready();
+      setIsTfReady(true);
+      try {
+
+        // let myModel = await NotesDetectionModel.load();
+        setModel(myModel);
+      } catch (err) {
+        console.log(err);
+      }
+    })();
+
+    //   const img = new Image()
+    // img.src = "./dog.jpg"
+    // const img = document.querySelector('img');
+    // async function getModel(){
+    //  setTimeout(() =>{
+    //  const model = mobilenet.load().then(model =>{
+    //     console.log(model)
+    //     model.classify(img).then(predictions => {
+    //       console.log('Predictions:', predictions);
+    //     })
+    //   });
+    // },
+    //   1000)
+    //   console.log(model)
+    // }
+    // getModel();
+
+    // console.log(tf)
+    // setIsTfReady(true);
+  }, []);
+  const YourComponent = ({ img }) => {
+    const myImage = React.createElement(
+      "img",
+      {
+        src: "./dog.jpg",
+        // any other image attributes you need go here
+      },
+      null
+    );
+
+    return { myImage };
+  };
+  const myClick = async () => {
+    const img = document.getElementById("img1");
+    console.log(img);
+    // console.log(Image.getSize("./dog.jpg"), "success", [failure]);
+    console.log("hello");
+    mobilenet.load().then((model) => {
+      console.log(model);
+      model.classify("./dog.jpg").then((predictions) => {
+        console.log("Predictions:", predictions);
+      });
+    });
+  };
+
+  // === CLEAR PREDICTIONS ==
+
+  const clearPredictions = () => {
+    setPredictions(null);
+  };
 
   const play = async () => {
     const splitUrl = url.split('/');
@@ -96,6 +178,8 @@ export default function NotesDetection() {
     return recordings.map((recordingLine, index) => {
       return (
         <View key={index} style={styles.row}>
+          <Text style={styles.bigBlue}>TF Status: {isTfReady ? "👌" : "⏳"}</Text>
+          <Text>Mobilenet Model Status: {mobilenetModel ? "👌" : "⏳"}</Text>
           <Text style={styles.fill}>Recording {index + 1} - {recordingLine.duration}</Text>
           <View style={{ display: 'flex', flexDirection: 'row' }}>
             <TouchableOpacity style={styles.button} onPress={() => recordingLine.sound.replayAsync()} title="Play"><Text style={styles.button}>Play</Text></TouchableOpacity>
@@ -117,7 +201,7 @@ export default function NotesDetection() {
       }}
     >
       <Text>Notes Detection from Sound</Text>
-      <BPMSlider/>
+      <BPMSlider />
       <TouchableOpacity style={styles.redButton} onPress={recording ? stopRecording : startRecording}>
         {/* <Text style={{ fontSize: 30 }}>Click</Text> */}
       </TouchableOpacity>
@@ -126,7 +210,7 @@ export default function NotesDetection() {
       </TouchableOpacity>
       {recording ? <Text>Recording...</Text> : null}
       {getRecordingLines()}
-      <Board recCount={recordings.length}/>
+      <Board recCount={recordings.length} />
     </ScrollView>
   )
 }
