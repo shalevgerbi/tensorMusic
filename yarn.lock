@@ -5113,7 +5113,12 @@ expo-font@~10.1.0:
   dependencies:
     fontfaceobserver "^2.1.0"
 
-expo-gl-cpp@^11.3.0, expo-gl-cpp@~11.3.0:
+expo-gl-cpp@^11.4.0:
+  version "11.4.0"
+  resolved "https://registry.yarnpkg.com/expo-gl-cpp/-/expo-gl-cpp-11.4.0.tgz#62b4b5c61ef065e94aa790a872aad2eee2ae11ea"
+  integrity sha512-vt9QYKX/4TxMaNnbv9ww5KILwyCmg91gqwA/6xuo4MqWxGkZoxy+b8lqsQthuPdn+FHgF0BNcvFW9nbN+JeSRg==
+
+expo-gl-cpp@~11.3.0:
   version "11.3.0"
   resolved "https://registry.yarnpkg.com/expo-gl-cpp/-/expo-gl-cpp-11.3.0.tgz#6bd02908b24ef4a4c02b493575afa6fd0ccb31db"
   integrity sha512-njL/slKqF/9WV6ykxUd9O6t9Qdz19M4NWfXT4ZvihrJVDM5rTOuZ3z7WP7C9TNq3GOQEso8dPhp5AVlXNw/6Ug==
