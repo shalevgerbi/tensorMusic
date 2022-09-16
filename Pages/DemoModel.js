@@ -1,4 +1,6 @@
-import React, { useState } from 'react'
+
+import React, { useEffect, useState } from 'react'
+
 import { Text, View } from 'react-native'
 
 import * as tf from '@tensorflow/tfjs'
@@ -19,7 +21,10 @@ async function startDemo() {
 
  //Loading model from models folder
  const modelJSON = require("../models/model.json");
- const modelWeights = require("../models/group1-shard1of1.bin");
+
+ const modelWeights = [require("../models/group1-shard1of4.bin"),require("../models/group1-shard2of4.bin"),
+   require("../models/group1-shard3of4.bin"),require("../models/group1-shard4of4.bin")];
+
 
 
 // Load the model from the models folder
@@ -75,10 +80,28 @@ const load = async () => {
 export default function DemoModel({navigatior}) {
     const [isTfReady, setIsTfReady] = useState(false);
     const [result, setResult] = useState('');
-    loadModel().then(console.log("model added"))
+
+    const [modelReady, setModelReady] = useState(null);
+    useEffect(() => {
+      (
+      async function() {
+        await tf.setBackend('cpu');
+        await tf.ready();
+        setIsTfReady(true);
+        const bundel = bundleResourceIO(modelJSON,modelWeights);
+        const MODEL=await tf.loadGraphModel(bundel);
+        MODEL ? setModelReady(MODEL) : null ;
+      }
+      )
+      ()
+    },[])
+    // loadModel().then(console.log("model added"))
     return (
         <View>
             <Text>Hello</Text>
+            {modelReady ? <Text>model ready</Text>: <Text> model Loading...</Text>}
+            {isTfReady ? <Text>tf ready</Text>: <Text> tf Loading...</Text>}
+
         </View>
     )
 }
