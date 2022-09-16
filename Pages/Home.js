@@ -15,6 +15,9 @@ export default function Home({ navigation }) {
       <TouchableOpacity onPress={() => navigation.navigate('Demo')}>
         <Text style={styles.menuItem}>Demo Page</Text>
       </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('DemoModel')}>
+        <Text style={styles.menuItem}>Demo Model</Text>
+      </TouchableOpacity>
 
     </View>
   )

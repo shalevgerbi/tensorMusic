@@ -14,6 +14,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from "./Pages/Home";
 import NotesDetection from "./Pages/NotesDetection";
 import Demo from "./Pages/Demo";
+import DemoModel from "./Pages/DemoModel";
 
 const Stack = createNativeStackNavigator();
 
@@ -25,6 +26,7 @@ export default function App() {
         <Stack.Screen name="Notes Detection" component={NotesDetection} />
         <Stack.Screen name="Take Picture" component={TakePicture} />
         <Stack.Screen name="Demo" component={Demo} />
+        <Stack.Screen name="DemoModel" component={DemoModel} />
       </Stack.Navigator>
     </NavigationContainer>
   );
