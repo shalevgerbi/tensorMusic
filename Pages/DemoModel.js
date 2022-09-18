@@ -1,107 +1,84 @@
 
 import React, { useEffect, useState } from 'react'
 
-import { Text, View } from 'react-native'
+import { Text, TouchableOpacity, View } from 'react-native'
 
 import * as tf from '@tensorflow/tfjs'
-// import * as tf from 'https://cdn.jsdelivr.net/npm/@tensorflow/tfjs'
 import { bundleResourceIO, decodeJpeg } from '@tensorflow/tfjs-react-native'
 
 import * as FileSystem from 'expo-file-system';
 
+//Loading model from models folder
+const modelJSON = require("../models/model.json");
 
+const modelWeights = [
+  require("../models/group1-shard1of4.bin"),
+  require("../models/group1-shard2of4.bin"),
+  require("../models/group1-shard3of4.bin"),
+  require("../models/group1-shard4of4.bin")
+];
 
-let model;
-async function startDemo() {
-    model = await tf.loadGraphModel('../models/model.json');
-    navigator.mediaDevices.getUserMedia({ audio: true, video: false })
-      .then(handleSuccess).catch(handleError);
+const example = require('../examples/demo.wav')
+
+export default function DemoModel({ navigatior }) {
+  const [isTfReady, setIsTfReady] = useState(false);
+  const [result, setResult] = useState('');
+  const [modelReady, setModelReady] = useState(false);
+  const [model, setModel] = useState();
+
+  useEffect(() => {
+    (async function () {
+      await tf.setBackend('cpu');
+      await tf.ready();
+      setIsTfReady(true);
+      const bundel = bundleResourceIO(modelJSON, modelWeights);
+      const MODEL = await tf.loadGraphModel(bundel);
+      setModel(MODEL)
+      console.log("model loaded")
+      setModelReady(true)
+
+    }
+    )()
+  }, [])
+
+  const readWavFile = async() => {
+    return new Promise(resove => {
+      var request = new XMLHttpRequest();
+      request.open('GET', '../examples/demo.wav', true);
+      request.responseType = 'arraybuffer';
+
+      request.onload = function () {
+        audioContext.decodeAudioData(request.response, function(buffer) {
+          resolve(buffer)
+        });
+      };
+      request.send()
+    })
+
+  }
+  const buildSpectrogram = async() =>{
+    
+    var audioContext = new AudioContext();
+    const buffer = await readWavFile()
+    
   }
 
+  
 
- //Loading model from models folder
- const modelJSON = require("../models/model.json");
+  const modelPredict = async () => {
+   const content = await FileSystem.writeAsStringAsync('../examples/demo.wav', { encoding: FileSystem.EncodingType.Base64 });
+   console.log(content)
 
- const modelWeights = [require("../models/group1-shard1of4.bin"),require("../models/group1-shard2of4.bin"),
-   require("../models/group1-shard3of4.bin"),require("../models/group1-shard4of4.bin")];
-
-
-
-// Load the model from the models folder
- const loadModel = async () => {
-   const model = await tf
-     .loadLayersModel(bundleResourceIO(modelJSON, Number(modelWeights)))
-     .catch(e => console.log(e));
-   console.log("Model loaded!");
-   return model;
- };
-
-// const loadModel = async () => {
-//     // const model = await tf.loadLayersModel('../models/model.json')
-//     // console.log(model)
-//     startDemo();
-//     // const model = await fetch('../models/model.json').then(data => console.log(data));
-//     // document.body.innerHTML = model.text()
-//     // console.log(res)
-//     // .ts: const loadModel = async ():Promise<void|tf.LayersModel>=>{
-//     // const model = await tf.loadLayersModel(ModelJSON);
-//     // const model = await tf.loadLayersModel(
-//         // bundleResourceIO(ModelJSON, '../models')
-//     // ).catch((e) => {
-//         // console.log("[LOADING ERROR] info:", e)
-//     // })
-//     return model
-// }
-const load = async () => {
-    try {
-      // Load mobilenet.
-      await tf.ready();
-    //   const model = await ModelJSON.load();
-      setIsTfReady(true);
-
-      // Start inference and show result.
-    //   const image = require('./basketball.jpg');
-      const imageAssetPath = Image.resolveAssetSource(image);
-      const response = await fetch(imageAssetPath.uri, {}, { isBinary: true });
-      const imageDataArrayBuffer = await response.arrayBuffer();
-      const imageData = new Uint8Array(imageDataArrayBuffer);
-      const imageTensor = decodeJpeg(imageData);
-      const prediction = await model.classify(imageTensor);
-      if (prediction && prediction.length > 0) {
-        setResult(
-          `${prediction[0].className} (${prediction[0].probability.toFixed(3)})`
-        );
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-export default function DemoModel({navigatior}) {
-    const [isTfReady, setIsTfReady] = useState(false);
-    const [result, setResult] = useState('');
-
-    const [modelReady, setModelReady] = useState(null);
-    useEffect(() => {
-      (
-      async function() {
-        await tf.setBackend('cpu');
-        await tf.ready();
-        setIsTfReady(true);
-        const bundel = bundleResourceIO(modelJSON,modelWeights);
-        const MODEL=await tf.loadGraphModel(bundel);
-        MODEL ? setModelReady(MODEL) : null ;
-      }
-      )
-      ()
-    },[])
-    // loadModel().then(console.log("model added"))
-    return (
-        <View>
-            <Text>Hello</Text>
-            {modelReady ? <Text>model ready</Text>: <Text> model Loading...</Text>}
-            {isTfReady ? <Text>tf ready</Text>: <Text> tf Loading...</Text>}
-
-        </View>
-    )
+    // const waveform = tf.audio.decode_wav(example)
+    // model.predict(example)
+    // console.log(waveform)
+  }
+  return (
+    <View>
+      <Text>Hello</Text>
+      {modelReady ? <Text>model ready</Text> : <Text> model Loading...</Text>}
+      {isTfReady ? <Text>tf ready</Text> : <Text> tf Loading...</Text>}
+      <TouchableOpacity onPress={() => modelPredict()}><Text>Predict</Text></TouchableOpacity>
+    </View>
+  )
 }

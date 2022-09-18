@@ -158,7 +158,6 @@ export default function TakePicture({ navigation }) {
 
     const savePhoto = () => {
       console.log('save');
-
     };
 
     return (

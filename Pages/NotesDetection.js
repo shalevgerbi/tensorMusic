@@ -7,7 +7,6 @@ import Board from '../components/Board';
 import BPMSlider from '../components/BPMSlider';
 import * as tf from "@tensorflow/tfjs";
 import "@tensorflow/tfjs-react-native";
-import * as NotesDetectionModel from "../models/model.json";
 import {decodeJpeg, asyncStorageIO } from "@tensorflow/tfjs-react-native";
 
 export default function NotesDetection() {
@@ -23,7 +22,7 @@ export default function NotesDetection() {
   const [predictions, setPredictions] = useState(null);
   
   useEffect(() => {
-    (async function getTensor() {
+    (async function() {
       const myModel = await tf.loadLayersModel(asyncStorageIO('../models/model.json').load)
       // const myModel = await tf.loadLayersModel('../models/model.json');
       // console.log(NotesDetectionModel.modelTopology.model_config.class_name)
@@ -177,14 +176,17 @@ export default function NotesDetection() {
   function getRecordingLines() {
     return recordings.map((recordingLine, index) => {
       return (
+        <View>
+        <Text style={styles.bigBlue}>TF Status: {isTfReady ? "👌" : "⏳"}</Text>
         <View key={index} style={styles.row}>
-          <Text style={styles.bigBlue}>TF Status: {isTfReady ? "👌" : "⏳"}</Text>
-          <Text>Mobilenet Model Status: {mobilenetModel ? "👌" : "⏳"}</Text>
+        
+          {/* <Text>Mobilenet Model Status: {mobilenetModel ? "👌" : "⏳"}</Text> */}
           <Text style={styles.fill}>Recording {index + 1} - {recordingLine.duration}</Text>
           <View style={{ display: 'flex', flexDirection: 'row' }}>
             <TouchableOpacity style={styles.button} onPress={() => recordingLine.sound.replayAsync()} title="Play"><Text style={styles.button}>Play</Text></TouchableOpacity>
             <TouchableOpacity style={styles.button} onPress={() => Sharing.shareAsync(recordingLine.file)} title="Share"><Text style={styles.button}>Share</Text></TouchableOpacity>
           </View>
+        </View>
         </View>
       );
     });
