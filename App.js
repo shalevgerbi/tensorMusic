@@ -1,13 +1,6 @@
-import { StatusBar } from "expo-status-bar";
 import * as React from "react"
-import { useEffect, useState } from "react";
-import { Button, Image, StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import * as tf from "@tensorflow/tfjs";
 import "@tensorflow/tfjs-react-native";
 import * as mobilenet from "@tensorflow-models/mobilenet";
-import { fetch, decodeJpeg } from "@tensorflow/tfjs-react-native";
-import * as ImagePicker from 'expo-image-picker';
-import * as FileSystem from "expo-file-system";
 import TakePicture from "./Pages/TakePicture";
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
