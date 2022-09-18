@@ -34,19 +34,19 @@ export default function TakePicture({ navigation }) {
   const [selectedImage, setSelectedImage] = React.useState(null)
   // const [type, setType] = useState(CameraType.back);
 
-  useEffect(() => {
-    ;(async function getTensor() {
-      await tf.setBackend('cpu')
-      await tf.ready()
-      setIsTfReady(true)
-      try {
-        let myModel = await mobilenet.load()
-        setMobilenetModel(myModel)
-      } catch (err) {
-        console.log(err)
-      }
-    })()
-  }, [])
+  // useEffect(() => {
+  //   ;(async function getTensor() {
+  //     await tf.setBackend('cpu')
+  //     await tf.ready()
+  //     setIsTfReady(true)
+  //     try {
+  //       let myModel = await mobilenet.load()
+  //       setMobilenetModel(myModel)
+  //     } catch (err) {
+  //       console.log(err)
+  //     }
+  //   })()
+  // }, [])
 
   // if (hasCameraPermission === undefined) {
   //   return <Text>Requesting permissions...</Text>
@@ -108,16 +108,20 @@ export default function TakePicture({ navigation }) {
 
   const openImagePickerAsync = async () => {
    //document.getElementById("takephoto").enabled =false;
+   let localUri;
     let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync()
     if (permissionResult.granted === false) {
       alert('Permission to access camera roll is required!')
       return
     }
     let pickerResult = await ImagePicker.launchImageLibraryAsync()
+    //console.log('pic', pickerResult);
+    //console.log('picuri', pickerResult.uri);
     if (pickerResult.cancelled === true) {
       return
     }
-    setSelectedImage({ localUri: pickerResult.uri })
+    setSelectedImage({ localUri: pickerResult.uri });
+    //console.log('local', localUri)
   }
   if (selectedImage !== null) {
     return (
@@ -128,7 +132,7 @@ export default function TakePicture({ navigation }) {
         />
         <TouchableOpacity  style={styles.buttonStyle} onPress={openImagePickerAsync}><Text>Upload again</Text></TouchableOpacity>
         <View>
-          <TouchableOpacity style={styles.buttonStyle} onPress={imageToTensor(selectedImage)}><Text>Predict</Text></TouchableOpacity>
+          <TouchableOpacity style={styles.buttonStyle}><Text>Predict</Text></TouchableOpacity>
         </View>
         <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('Home')}>
         <Text>Back</Text>
@@ -149,7 +153,7 @@ export default function TakePicture({ navigation }) {
   };
 
   if (photo) {
-    // console.log(`data:image/jpg;base64,${photo.base64}`)
+    //console.log(`data:image/jpg;base64,${photo.base64}`)
     let sharePic = () => {
       shareAsync(photo.uri).then(() => {
         setPhoto(undefined);
@@ -162,10 +166,11 @@ export default function TakePicture({ navigation }) {
 
     return (
       <SafeAreaView style={styles.container}>
-        {/* erro in chrome , in ios and android works */}
+        {/* error in chrome , in ios and android works */}
         <Image style={styles.preview} source={{uri: `data:image/jpg;base64,${photo.base64}`}} /> 
         <TouchableOpacity style={styles.buttonStyle} onPress={savePhoto}><Text>Save</Text></TouchableOpacity>
         <TouchableOpacity style={styles.buttonStyle} onPress={sharePic}><Text>Share</Text></TouchableOpacity>
+        <TouchableOpacity style={styles.buttonStyle}><Text>Predict</Text></TouchableOpacity>
         <TouchableOpacity style={styles.buttonStyle} onPress={() => setPhoto(undefined)}><Text>Discard</Text></TouchableOpacity>
       </SafeAreaView>
     );
@@ -181,7 +186,7 @@ export default function TakePicture({ navigation }) {
     setHasCameraPermission(cameraPermission.status === 'granted')
     }
     if(hasCameraPermission){
-      console.log("has")
+      //console.log("has")
       return (
         <Camera style={styles.container} ref={cameraRef}>
           <View style={styles.buttonContainer}>
@@ -194,7 +199,7 @@ export default function TakePicture({ navigation }) {
     }
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' ,backgroundColor:'#FEF5ED' }}>
       <View  style={{ alignItems: 'center', justifyContent: 'space-between' }}>
       <TouchableOpacity style={styles.buttonStyle}  onPress={takePhoto}><Text>Take a photo</Text></TouchableOpacity>
       </View>
@@ -206,7 +211,6 @@ export default function TakePicture({ navigation }) {
 }
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'green',
     backgroundColor: '#fff',
     flex: 1,
     alignItems: 'center',
@@ -250,7 +254,7 @@ const styles = StyleSheet.create({
   buttonStyle: {
     width: 130,
     borderRadius: 4,
-    backgroundColor: '#F2FFE9',
+    backgroundColor: '#D3E4CD',
     color:'#ffff',
     flexDirection: 'row',
     justifyContent: 'center',
@@ -264,3 +268,4 @@ const styles = StyleSheet.create({
       width: 25
   }
 })
+
